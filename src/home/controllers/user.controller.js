@@ -9,12 +9,12 @@ const registerController = async (req, res, next) => {
         let saveResult = await userModel.registerUser(Body);
 
         if (saveResult) {
-            res.redirect("/user/login");
+            return res.redirect("/user/login");
         }
         else {
             let notRegister = 'Registration unsuccessful!';
             let title = 'Register';
-            res.render("register", { title, notRegister });
+            return res.render("register", { title, notRegister });
         }
     }
     catch (error) {
@@ -32,18 +32,18 @@ const loginController = async (req, res, next) => {
 
             if (loginResult) {
                 if (loginResult.password === (Body.password).toString()) {
-                    res.send(`<h2>Logged in successfully</h2>`);
+                    return res.send(`<h2>Logged in successfully</h2>`);
                 }
                 else {
                     let notLogin = 'Invalid password!';
                     let title = 'Login';
-                    res.render("login", { title, notLogin });
+                    return res.render("login", { title, notLogin });
                 }
             }
             else {
                 let notLogin = 'Account not found!';
                 let title = 'Login';
-                res.render("login", { title, notLogin });
+                return res.render("login", { title, notLogin });
             }
         }
         catch (error) {
@@ -52,4 +52,4 @@ const loginController = async (req, res, next) => {
     }
 }
 
-    module.exports = { registerController, loginController };
+module.exports = { registerController, loginController };

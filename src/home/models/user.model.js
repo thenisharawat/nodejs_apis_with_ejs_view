@@ -31,7 +31,7 @@ const registerUser = async (body) => {
 
 const loginUser = async (body) => {
     let query = { email: (body.email).toString() };
-    let findResult = UserModel.findOne(query);
+    let findResult = userModel.findOne(query);
     return findResult;
 
 }
