@@ -16,13 +16,12 @@
         <%= title %>
     </title>
 
-    <% if (typeof notContact !=='undefined' && notContact) { %>
+    <% if (typeof notProfile !=='undefined' && notProfile) { %>
         <script>
-            window.alert("<%= notContact %>");
+            window.alert("<%= notProfile %>");
         </script>
         <% } %>
-
-
+            <%- include('common.ejs') %>
             <link rel="icon" type="image/x-icon" href="/images/logo.ico">
 
             <!-- bootstrap core css -->
@@ -72,8 +71,12 @@
                                 <a href="/">Home</a>
                                 <a href="/about">About</a>
                                 <a href="/contact">Contact Us</a>
-                                <a href="/user/register">Register</a>
-                                <a href="/user/login">Login</a>
+                                <% if (loggedIn) { %>
+                                    <a href="/user/logout">Logout</a>
+                                    <% } else { %>
+                                        <a href="/user/register">Register</a>
+                                        <a href="/user/login">Login</a>
+                                        <% } %>
                             </div>
                         </div>
                     </div>
@@ -93,41 +96,39 @@
                         <div class="heading_container">
                             <img src="/images/heading-img.png" alt="">
                             <h2>
-                                Request A Call Back
+                                Hey <%= userName %>!
                             </h2>
                             <p>
-                                It is a long established fact that a reader will be distracted by the
+                                You can also update your profile!
                             </p>
                         </div>
-                        <form action="/user/contact" method="POST">
+                        <form action="/user/update-profile" , method="POST" enctype="multipart/form-data">
+                            <label for="fileToUpload">
+                                <% if (fileExists) { %>
+                                    <div class="profile-pic" style="background-image: url('/uploads/<%= profile %>')">
+                                        <% } else { %>
+                                            <div class="profile-pic" style="background-image: url('<%= profile %>')">
+                                                <% } %>
+                                    <i class="fa fa-camera"> Change Image</i>
+                                </div>
+                            </label>
+                            <input type="file" name="image" id="image" placeholder="File" />
                             <div>
-                                <input type="text" name="full_name" placeholder="Full Name " required />
+                                <input type="text" name="full_name" placeholder="Full Name" value="<%= user.full_name %>"required />
                             </div>
                             <div>
-                                <input type="text" name="phone_number" placeholder="Phone number" required />
+                                <input type="text" name="mobile_number" placeholder="Phone number" value="<%= user.mobile_number %>"required />
                             </div>
                             <div>
-                                <input type="email" name="email" placeholder="Email" required />
+                                <input type="email" name="email" placeholder="Email" value="<%= user.email %>"required />
                             </div>
-                            <div>
-                                <input type="text" name="email" class="message-box" placeholder="Message" required />
-                            </div>
+
                             <div class="d-flex ">
-                                <button>
-                                    SEND
+                                <button type="submit">
+                                    Update Profile
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-                <div class="col-md-6 px-0">
-                    <div class="map_container">
-                        <div class="map-responsive">
-                            <iframe
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=OYO_85607_Aashray_Rooms"
-                                width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%"
-                                allowfullscreen></iframe>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -146,14 +147,13 @@
                         <h5>
                             CONTACT INFO
                         </h5>
-                        <div class="contact-footer">
-                            <div>Email: <a href="mailto:example@example.com">example@example.com</a></div>
-
-                        </div>
-                        <div class="contact-footer">
-
-                            <div>Phone: <a href="tel:+1234567890">+1234567890</a></div>
-                        </div>
+                                    <div class="contact-footer">
+                                        <div>Email: <a href="mailto:example@example.com">example@example.com</a></div>
+                                    </div>
+                                    <div class="contact-footer">
+                                    
+                                        <div>Phone: <a href="tel:+1234567890">+1234567890</a></div>
+                                    </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
@@ -240,6 +240,45 @@
             document.getElementById("myNav").classList.toggle("menu_width")
             document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style")
         }
+    </script>
+    <script>
+        // Get the input fields
+        const fullNameInput = document.querySelector('input[name="full_name"]');
+        const mobileNumberInput = document.querySelector('input[name="mobile_number"]');
+        const emailInput = document.querySelector('input[name="email"]');
+
+        // Add event listeners to input fields
+        fullNameInput.addEventListener('input', updateValue);
+        mobileNumberInput.addEventListener('input', updateValue);
+        emailInput.addEventListener('input', updateValue);
+
+        // Function to update the pre-filled values
+        function updateValue() {
+            this.setAttribute('value', this.value);
+        }
+    </script>
+    <script>
+        // This script is used to change profile pic on click
+        // Get the elements
+        const profilePic = document.querySelector('.profile-pic');
+        const imageInput = document.getElementById('image');
+
+        // Add event listener for profile pic click
+        profilePic.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Add event listener for file input change
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 
 </body>

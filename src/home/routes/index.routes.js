@@ -2,7 +2,7 @@ const express = require('express');
 const indexRouter = express.Router();
 
 indexRouter.get('/', async (req, res, next) => {
-    res.render("index", { title: "Home" });
+    res.render("index", { title: "Home", loggedIn: req.session?.loggedIn || false });
 });
 
 indexRouter.get('/about', async (req, res, next) => {

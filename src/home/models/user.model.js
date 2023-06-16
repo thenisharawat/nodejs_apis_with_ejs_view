@@ -1,3 +1,4 @@
+const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -16,6 +17,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true,
+    },
+    profile_pic: {
+        type: String,
+        default: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png'
     }
 });
 
@@ -31,12 +36,29 @@ const registerUser = async (body) => {
 
 const loginUser = async (body) => {
     let query = { email: (body.email).toString() };
-    let findResult = UserModel.findOne(query);
+    let findResult = userModel.findOne(query);
     return findResult;
-
 }
 
-module.exports = { userModel, registerUser, loginUser };
+const getProfile = async (userId) => {
+    let query = { _id: userId };
+    let findResult = userModel.findOne(query);
+    return findResult;
+}
+
+const updateProfile = async (body) => {
+    let query = { _id: body.userId };
+    let setData = {
+        full_name: body.full_name,
+        email: body.email,
+        mobile_number: body.mobile_number,
+        profile_pic: body.profile_pic
+    };
+    let updateResult = userModel.updateOne(query, setData);
+    return updateResult;
+}
+
+module.exports = { userModel, registerUser, loginUser, getProfile, updateProfile };
 
 
 

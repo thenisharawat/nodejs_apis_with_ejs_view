@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const session = require('express-session');
 
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -9,7 +10,16 @@ const PORT = process.env.PORT || 2020
 
 const parentDirectory = path.resolve(__dirname, '..');
 
-
+app.use(session(
+    {
+        secret: 'secret@123',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 60 * 60 * 1000 // Set the session time to 1 hour (in milliseconds)
+        }
+    }
+));
 
 app.use(express.static(path.join(parentDirectory, 'public')));
 
