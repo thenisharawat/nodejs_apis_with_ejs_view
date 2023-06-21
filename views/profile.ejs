@@ -104,11 +104,7 @@
                         </div>
                         <form action="/user/update-profile"  method="POST" enctype="multipart/form-data">
                             <label for="fileToUpload">
-                                <% if (fileExists) { %>
-                                    <div class="profile-pic" style="background-image: url('/uploads/<%= profile %>')">
-                                        <% } else { %>
-                                            <div class="profile-pic" style="background-image: url('<%= profile %>')">
-                                                <% } %>
+                                <div class="profile-pic" style="background-image: url('/uploads/<%= profile %>')">
                                     <i class="fa fa-camera"> Change Image</i>
                                 </div>
                             </label>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+
+    <title>
+        <%= title %>
+    </title>
+
+    <% if (typeof notLogin !=='undefined' && notLogin) { %>
+        <script>
+            window.alert("<%= notLogin %>");
+        </script>
+        <% } %>
+            <%- include('common.ejs') %>
+
+                <link rel="icon" type="image/x-icon" href="/images/logo.ico">
+
+                <!-- bootstrap core css -->
+                <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+
+                <!-- Navbar css -->
+                <link rel="stylesheet" type="text/css" href="/css/admin/admin-navbar.css" />
+
+                <!-- Table css -->
+                <link rel="stylesheet" type="text/css" href="/css/admin/table.css" />
+
+                <!-- fonts style -->
+                <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,700&display=swap"
+                    rel="stylesheet">
+                <!-- Custom styles for this template -->
+                <link href="/css/style.css" rel="stylesheet" />
+                <!-- responsive style -->
+                <link href="/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+    <div class="hero_area ">
+        <!-- header section strats -->
+        <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container">
+                    <a class="navbar-brand" href="/">
+                        <img src="/images/logo.png" alt="">
+                    </a>
+                    <div class="navbar-toggle">
+                        <span class="toggle-icon"></span>
+                    </div>
+
+                    <ul class="menuItems">
+                        <li><a href="#" data-item="Home">Home</a></li>
+                        <li><a href="#" data-item="About">About</a></li>
+                        <li><a href="#" data-item="Projects">Projects</a></li>
+                        <li><a href="#" data-item="Blog">Blog</a></li>
+                        <li><a href="/admin/logout" data-item="Logout">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <!-- end header section -->
+    </div>
+
+    <!-- contact section -->
+
+    <section class="contact_section layout_padding-top">
+        <div class="container-fluid">
+            <div class="wrapper">
+                <div class="" style="text-align: center; font-size: 25px; font-weight: bold;">
+                    <p>User List</p>
+                </div>
+                <div class="table">
+                    <div class="row header">
+                        <div class="cell">
+                            Picture
+                        </div>
+                        <div class="cell">
+                            Full Name
+                        </div>
+                        <div class="cell">
+                            Email
+                        </div>
+                        <div class="cell">
+                            Mobile Number
+                        </div>
+                    </div>
+                    <% users.forEach((user)=>{ %>
+                        <div class="row">
+                            <div class="cell">
+                                <img src="/uploads/<%= user.profile_pic %>" alt="">
+                            </div>
+                            <div class="cell">
+                                <%= user.full_name %>
+                            </div>
+                            <div class="cell" data-title="Occupation">
+                                <%= user.email %>
+                            </div>
+                            <div class="cell" data-title="Location">
+                                <%= user.mobile_number %>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                <div class="" style="text-align: center; font-size: 25px; font-weight: bold;">
+                    <p>Product List</p>
+                </div>
+                <div class="table">
+
+                    <div class="row header green">
+                        <div class="cell">
+                            Product
+                        </div>
+                        <div class="cell">
+                            Unit Price
+                        </div>
+                        <div class="cell">
+                            Quantity
+                        </div>
+                        <div class="cell">
+                            Date Sold
+                        </div>
+                        <div class="cell">
+                            Status
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="cell" data-title="Product">
+                            Solid oak work table
+                        </div>
+                        <div class="cell" data-title="Unit Price">
+                            $800
+                        </div>
+                        <div class="cell" data-title="Quantity">
+                            10
+                        </div>
+                        <div class="cell" data-title="Date Sold">
+                            03/15/2014
+                        </div>
+                        <div class="cell" data-title="Status">
+                            Waiting for Pickup
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="cell" data-title="Product">
+                            Leather iPhone wallet
+                        </div>
+                        <div class="cell" data-title="Unit Price">
+                            $45
+                        </div>
+                        <div class="cell" data-title="Quantity">
+                            120
+                        </div>
+                        <div class="cell" data-title="Date Sold">
+                            02/28/2014
+                        </div>
+                        <div class="cell" data-title="Status">
+                            In Transit
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="cell" data-title="Product">
+                            27" Apple Thunderbolt displays
+                        </div>
+                        <div class="cell" data-title="Unit Price">
+                            $1000
+                        </div>
+                        <div class="cell" data-title="Quantity">
+                            25
+                        </div>
+                        <div class="cell" data-title="Date Sold">
+                            02/10/2014
+                        </div>
+                        <div class="cell" data-title="Status">
+                            Delivered
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="cell" data-title="Product">
+                            Bose studio headphones
+                        </div>
+                        <div class="cell" data-title="Unit Price">
+                            $60
+                        </div>
+                        <div class="cell" data-title="Quantity">
+                            90
+                        </div>
+                        <div class="cell" data-title="Date Sold">
+                            01/14/2014
+                        </div>
+                        <div class="cell" data-title="Status">
+                            Delivered
+                        </div>
+                    </div>
+
+                </div>
+            
+                <div class="" style="text-align: center; font-size: 25px; font-weight: bold;">
+                     <p>Update Users</p>
+              </div>
+                <div class="table">             
+
+                     <div class="row header blue">
+                         <div class="cell">
+                             Full Name
+                        </div>
+                        Email
+                         </div>
+                        <div class="cell">
+                         Password
+                         </div>
+                     <div class="cell">
+                            Status
+                     </div>
+                       <div class="cell" style="text-align:center">
+                            Action
+                        </div>
+                </div>
+                    <% users.forEach((user, index)=>{ %>
+                        <div class="row">
+                            <div class="cell" data-title="Full Name">
+                                <%= user.full_name %>
+                            </div>
+                            <div class="cell" data-title="Email">
+                                <%= user.email %>
+                            </div>
+                            <div class="cell" data-title="Password">
+                               *********
+                            </div>
+                            <div class="cell" data-title="Active">
+                                <%= user.status %>
+                            </div>
+                            
+                           <div class="cell" style="text-align:center">
+                               <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                               <a href="#" id="deleteUserButton"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <% }) %>
+              </div> 
+
+            </div>
+        </div>
+    </section>
+
+    <!-- footer section -->
+    <section class="container-fluid footer_section ">
+        <p>
+            &copy; 2019 All Rights Reserved. Design by
+            <a href="localhost:5000">Drool</a>
+        </p>
+    </section>
+    <!-- end  footer section -->
+    <!-- Add the confirmation modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure?</h2>
+            <p>This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <a href="#" id="confirmYes">Yes</a>
+                <a href="#" id="confirmNo">No</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script>
+        const toggleButton = document.querySelector('.navbar-toggle');
+
+        toggleButton.addEventListener('click', () => {
+            toggleButton.classList.toggle('active');
+            document.querySelector('.menuItems').classList.toggle('active');
+        });
+
+    </script>
+    <!-- JavaScript code to handle the confirmation --> 
+
+     <script>
+      document.getElementById('deleteUserButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+
+            // Display the confirmation modal
+            document.getElementById('confirmationModal').style.display = 'block';
+        });
+
+        document.getElementById('confirmYes').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+
+            // Make an AJAX request to the "/admin/delete-user" route
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/admin/delete-user', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Handle the response from the server
+                    var response = JSON.parse(xhr.responseText);
+                    // TODO: Do something with the response
+                }
+            };
+            xhr.send();
+
+            // Close the confirmation modal
+            document.getElementById('confirmationModal').style.display = 'none';
+        });
+
+        document.getElementById('confirmNo').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+
+            // Close the confirmation modal
+            document.getElementById('confirmationModal').style.display = 'none';
+        });
+
+    
+    </script>
+    
+
+
+</body>
+
+</html>

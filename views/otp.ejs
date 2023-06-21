@@ -16,12 +16,11 @@
         <%= title %>
     </title>
 
-    <% if (typeof notContact !=='undefined' && notContact) { %>
+    <% if (typeof otpVerify !=='undefined' && otpVerify) { %>
         <script>
-            window.alert("<%= notContact %>");
+            window.alert("<%= otpVerify %>");
         </script>
         <% } %>
-
 
             <link rel="icon" type="image/x-icon" href="/images/logo.ico">
 
@@ -93,42 +92,27 @@
                         <div class="heading_container">
                             <img src="/images/heading-img.png" alt="">
                             <h2>
-                                Request A Call Back
+                                Login here!
                             </h2>
-                            <p>
-                                It is a long established fact that a reader will be distracted by the
-                            </p>
                         </div>
-                        <form action="/user/contact" method="POST">
+                        <form action="/user/verify-otp" , method="POST">
                             <div>
-                                <input type="text" name="full_name" placeholder="Full Name " required />
+                                <input type="email" name="email" value="<%= emailValue %>" placeholder="Email" required />
                             </div>
                             <div>
-                                <input type="text" name="phone_number" placeholder="Phone number" required />
-                            </div>
-                            <div>
-                                <input type="email" name="email" placeholder="Email" required />
-                            </div>
-                            <div>
-                                <input type="text" name="message" class="message-box" placeholder="Message" required />
+                                <input type="otp" name="otp" placeholder="otp" required />
                             </div>
                             <div class="d-flex ">
-                                <button>
-                                    SEND
+                                </p>
+                                <button type="submit">
+                                    Verify Account
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="col-md-6 px-0">
-                    <div class="map_container">
-                        <div class="map-responsive">
-                            <iframe
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=OYO_85607_Aashray_Rooms"
-                                width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%"
-                                allowfullscreen></iframe>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -154,6 +138,20 @@
 
                             <div>Phone: <a href="tel:+1234567890">+1234567890</a></div>
                         </div>
+
+
+                        <!--<div>
+                            <img src="/images/call.png" alt="" />
+                            <p>
+                                +01 1234567890
+                            </p>
+                        </div>
+                        <div>
+                            <img src="/images/mail.png" alt="" />
+                            <p>
+                                demo@gmail.com
+                            </p>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
@@ -219,6 +217,8 @@
             </div>
         </div>
     </section>
+    <!-- footer -->
+
 
     <!-- end info_section -->
 
