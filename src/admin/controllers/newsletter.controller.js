@@ -1,7 +1,7 @@
 const path = require('path');
 const newsletterModel = require('../models/newsletter.model');
 
-
+//define  newsletter Controller
 const newsletterController = async (req, res, next) => {
     try {
         let Body = req.body;
@@ -17,7 +17,7 @@ const newsletterController = async (req, res, next) => {
             let notNewsletter = 'Newsletter unsuccessful!';
             let title = 'Home';
             res.render("Home", { title, notNewsletter });
-        }
+        }c
     }
     catch (error) {
         res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);

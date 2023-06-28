@@ -12,6 +12,7 @@ const newsletterSchema = new mongoose.Schema({
 
 const newsletterModel = mongoose.model('newsletter', newsletterSchema);
 
+//function to save newsletter
 const saveNewsletter = async (body) => {
     let Contact = newsletterModel(body);
     return Contact.save();

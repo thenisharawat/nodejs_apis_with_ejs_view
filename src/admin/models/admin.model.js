@@ -1,7 +1,8 @@
 const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
 
-const admiSchema = new mongoose.Schema({
+//defining the admin schema
+const adminSchema = new mongoose.Schema({
     full_name: {
         type: String,
         required: true
@@ -28,21 +29,23 @@ const admiSchema = new mongoose.Schema({
     }
 });
 
+//create the admin model
+const adminModel = mongoose.model('admin', adminSchema);
 
-const adminModel = mongoose.model('admin', admiSchema);
-
-
+//function to register new admin
 const registerAdmin = async (body) => {
     let user = adminModel(body);
     let saveResult = user.save();
     return saveResult;
 }
 
+//function to login admin
 const loginAdmin = async (body) => {
     let query = { email: (body.email).toString() };
     let findResult = adminModel.findOne(query);
     return findResult;
 }
+
 
 const findAdmin = async (body) => {
     let query = { email: (body.email).toString() };
@@ -50,12 +53,14 @@ const findAdmin = async (body) => {
     return findResult;
 }
 
+// function to get admin profile
 const getProfile = async (userId) => {
     let query = { _id: userId };
     let findResult = adminModel.findOne(query);
     return findResult;
 }
 
+// function to update admin profile
 const updateProfile = async (body) => {
     let query = { _id: body.userId };
     let setData = {

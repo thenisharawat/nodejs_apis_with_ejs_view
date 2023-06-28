@@ -4,6 +4,7 @@ const app = express();
 const session = require('express-session');
 
 require('dotenv').config();
+console.log("process.env:-", process.env.PORT);
 
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -27,7 +28,7 @@ app.use(session(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 60 * 60 * 1000 // Set the session time to 1 hour (in milliseconds)
+            maxAge: 60 * 60 * 1000 
         }
     }
 ));

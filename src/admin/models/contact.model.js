@@ -23,6 +23,7 @@ const contactSchema = new mongoose.Schema({
 
 const contactModel = mongoose.model('Contact', contactSchema);
 
+//fuction to save contact
 const saveContact = async (body) => {
     let Contact = contactModel(body);
     let saveContact = Contact.save();

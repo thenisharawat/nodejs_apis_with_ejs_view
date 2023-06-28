@@ -2,7 +2,7 @@ const express = require('express');
 const contactModel = require('../models/contact.model');
 const path = require('path');
 
-//// Controller  for handling contact
+// Controller  for handling contact
 const contactController = async (req, res, next) => {
     try {
         let Body = req.body;
