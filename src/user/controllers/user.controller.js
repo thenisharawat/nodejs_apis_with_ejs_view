@@ -1,7 +1,7 @@
 const express = require('express');
 const userModel = require('../models/user.model');
 const multer = require('multer');
-const upload = multer({ dest: '/public/uploads' });
+const upload = multer({ dest: '/uploads' });
 const fs = require('fs');
 const path = require('path');
 const { genSaltSync, hashSync, compareSync } = require('bcryptjs');
