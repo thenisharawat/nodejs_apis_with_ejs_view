@@ -39,6 +39,7 @@ app.set('views', [
     path.join(parentDirectory, 'views'),
     path.join(parentDirectory, 'views/admin'),
 ]);
+
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());

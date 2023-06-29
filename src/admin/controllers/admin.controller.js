@@ -2,7 +2,7 @@ const express = require('express');
 const adminModel = require('../models/admin.model');
 const userModel = require('../../user/models/user.model');
 const multer = require('multer');
-const upload = multer({ dest: '/uploads' });
+const upload = multer({ dest: '/public/uploads' });
 const fs = require('fs');
 const path = require('path');
 
