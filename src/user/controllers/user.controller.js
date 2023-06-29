@@ -1,7 +1,7 @@
 const express = require('express');
 const userModel = require('../models/user.model');
-const multer = require('multer');
-const upload = multer({ dest: '/public/uploads' });
+// const multer = require('multer');
+// const upload = multer({ dest: '/public/uploads' });
 const fs = require('fs');
 const path = require('path');
 const { genSaltSync, hashSync, compareSync } = require('bcryptjs');
@@ -24,8 +24,8 @@ const { ADMIN_EMAIL, ADMIN_EMAIL_PASSWORD } = process.env;
 const { generate } = require('otp-generator');
 
 
-// const parentPath = path.resolve(__dirname, "../../../")
-// const uploadsPath = path.join(parentPath, '/public/uploads')
+const parentPath = path.resolve(__dirname, "../../../")
+const uploadsPath = path.join(parentPath, '/public/uploads')
 
 
     // Controller for user registration
