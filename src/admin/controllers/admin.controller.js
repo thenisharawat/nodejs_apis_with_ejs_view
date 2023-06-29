@@ -43,7 +43,6 @@ const registerController = async (req, res, next) => {
 
         for (let i = 0; i < Body.length; i++) {
             let findResult = await adminModel.findAdmin(Body[i]);
-
             if (findResult) {
                 console.log("Super admin is already registered!");
             }
@@ -57,9 +56,11 @@ const registerController = async (req, res, next) => {
                 }
             }
         }
+        return;
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.error("Catch error:-", error);
+        res.status(500).send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -80,7 +81,7 @@ const loginController = async (req, res, next) => {
                 req.session.userId = loginResult._id;
                 req.session.userName = loginResult.full_name;
                 res.redirect("/admin/dashboard");
-                // res.send(`<h2>Logged in successfully</h2>`);
+                // res.status(500).send(`<h2>Logged in successfully</h2>`);
             }
             else {
                 let notLogin = 'Invalid password!';
@@ -95,7 +96,8 @@ const loginController = async (req, res, next) => {
         }
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.error("Catch error:-", error);
+        res.status(500).send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -106,7 +108,8 @@ const dashboardController = async (req, res, next) => {
         res.render('adminDashboard', { title: 'Admin Dashboard', loggedIn: req.session?.loggedIn || false, users: allUsers });
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.error("Catch error:-", error);
+        res.status(500).send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -125,7 +128,7 @@ const dashboardController = async (req, res, next) => {
 //         res.render('profile', { title: title, userName: userName, user: profileResult, loggedIn: loggedIn, profile: profilePic, fileExists });
 //     }
 //     catch (error) {
-//         res.send(`<h2>Something went wrong, Please try again later: ${error}</h2>`);
+//         res.status(500).send(`<h2>Something went wrong, Please try again later: ${error}</h2>`);
 //     }
 // }
 
@@ -160,7 +163,7 @@ const dashboardController = async (req, res, next) => {
 //         }
 //     }
 //     catch (error) {
-//         res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+//         res.status(500).send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
 //     }
 // }
 
