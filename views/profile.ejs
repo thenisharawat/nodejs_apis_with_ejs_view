@@ -22,18 +22,18 @@
         </script>
         <% } %>
             <%- include('common.ejs') %>
-            <link rel="icon" type="image/x-icon" href="/images/logo.ico">
+                <link rel="icon" type="image/x-icon" href="/images/logo.ico">
 
-            <!-- bootstrap core css -->
-            <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+                <!-- bootstrap core css -->
+                <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
 
-            <!-- fonts style -->
-            <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,700&display=swap"
-                rel="stylesheet">
-            <!-- Custom styles for this template -->
-            <link href="/css/style.css" rel="stylesheet" />
-            <!-- responsive style -->
-            <link href="/css/responsive.css" rel="stylesheet" />
+                <!-- fonts style -->
+                <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,700&display=swap"
+                    rel="stylesheet">
+                <!-- Custom styles for this template -->
+                <link href="/css/style.css" rel="stylesheet" />
+                <!-- responsive style -->
+                <link href="/css/responsive.css" rel="stylesheet" />
 </head>
 
 <body class="sub_page">
@@ -102,7 +102,7 @@
                                 You can also update your profile!
                             </p>
                         </div>
-                        <form action="/user/update-profile"  method="POST" enctype="multipart/form-data">
+                        <form action="/user/update-profile" method="POST" enctype="multipart/form-data">
                             <label for="fileToUpload">
                                 <div class="profile-pic" style="background-image: url('/uploads/<%= profile %>')">
                                     <i class="fa fa-camera"> Change Image</i>
@@ -110,13 +110,16 @@
                             </label>
                             <input type="file" name="image" id="image" placeholder="File" />
                             <div>
-                                <input type="text" name="full_name" placeholder="Full Name" value="<%= user.full_name %>"required />
+                                <input type="text" name="full_name" placeholder="Full Name"
+                                    value="<%= user.full_name %>" required />
                             </div>
                             <div>
-                                <input type="text" name="mobile_number" placeholder="Phone number" value="<%= user.mobile_number %>"required />
+                                <input type="text" name="mobile_number" placeholder="Phone number"
+                                    value="<%= user.mobile_number %>" required />
                             </div>
                             <div>
-                                <input type="email" name="email" placeholder="Email" value="<%= user.email %>"required />
+                                <input type="email" name="email" placeholder="Email" value="<%= user.email %>"
+                                    required />
                             </div>
 
                             <div class="d-flex ">
@@ -143,13 +146,13 @@
                         <h5>
                             CONTACT INFO
                         </h5>
-                                    <div class="contact-footer">
-                                        <div>Email: <a href="mailto:rawatnisha@gmail.com">rawatnisha@gmail.com</a></div>
-                                    </div>
-                                    <div class="contact-footer">
-                                    
-                                        <div>Phone: <a href="tel:+919630196629">+919630196629</a></div>
-                                    </div>
+                        <div class="contact-footer">
+                            <div>Email: <a href="mailto:rawatnisha@gmail.com">rawatnisha@gmail.com</a></div>
+                        </div>
+                        <div class="contact-footer">
+
+                            <div>Phone: <a href="tel:+919630196629">+919630196629</a></div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
@@ -187,7 +190,7 @@
                                 </a>
                             </div>
                             <div>
-                                <a href="https://www.linkedin.com/feed/">
+                                <a href="https://www.linkedin.com/feed/" target="_blank">
                                     <img src="/images/linkedin.png" alt="" />
                                 </a>
                             </div>

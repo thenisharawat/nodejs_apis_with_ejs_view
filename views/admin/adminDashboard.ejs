@@ -206,28 +206,28 @@
                     </div>
 
                 </div>
-            
-                <div class="" style="text-align: center; font-size: 25px; font-weight: bold;">
-                     <p>Update Users</p>
-              </div>
-                <div class="table">             
 
-                     <div class="row header blue">
-                         <div class="cell">
-                             Full Name
-                        </div>
-                        Email
-                         </div>
+                <div class="" style="text-align: center; font-size: 25px; font-weight: bold;">
+                    <p>Update Users</p>
+                </div>
+                <div class="table">
+                    <div class="row header blue">
                         <div class="cell">
-                         Password
-                         </div>
-                     <div class="cell">
+                            Full Name
+                        </div>
+                        <div class="cell">
+                            Email
+                        </div>
+                        <div class="cell">
+                            Password
+                        </div>
+                        <div class="cell">
                             Status
-                     </div>
-                       <div class="cell" style="text-align:center">
+                        </div>
+                        <div class="cell" style="text-align:center">
                             Action
                         </div>
-                </div>
+                    </div>
                     <% users.forEach((user, index)=>{ %>
                         <div class="row">
                             <div class="cell" data-title="Full Name">
@@ -237,19 +237,19 @@
                                 <%= user.email %>
                             </div>
                             <div class="cell" data-title="Password">
-                               *********
+                                *********
                             </div>
                             <div class="cell" data-title="Active">
                                 <%= user.status %>
                             </div>
-                            
-                           <div class="cell" style="text-align:center">
-                               <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                               <a href="#" id="deleteUserButton"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                            <div class="cell" style="text-align:center">
+                                <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                                <a href="#" id="deleteUserButton"><i class="fa fa-trash" aria-hidden="true"></i></a>
                             </div>
                         </div>
                         <% }) %>
-              </div> 
+                </div>
 
             </div>
         </div>
@@ -286,10 +286,10 @@
         });
 
     </script>
-    <!-- JavaScript code to handle the confirmation --> 
+    <!-- JavaScript code to handle the confirmation -->
 
-     <script>
-      document.getElementById('deleteUserButton').addEventListener('click', function (event) {
+    <script>
+        document.getElementById('deleteUserButton').addEventListener('click', function (event) {
             event.preventDefault(); // Prevent the default link behavior
 
             // Display the confirmation modal
@@ -323,9 +323,9 @@
             document.getElementById('confirmationModal').style.display = 'none';
         });
 
-    
+
     </script>
-    
+
 
 
 </body>
