@@ -1,7 +1,7 @@
 const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
 
- // Defining user schema
+// Defining user schema
 const userSchema = new mongoose.Schema({
     full_name: {
         type: String,
@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     },
     mobile_number: {
         type: Number,
-        required: true
+        // required: true
     },
     email: {
         type: String,
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: true,
+        // require: true,
     },
     status: {
         type: String,
@@ -33,19 +33,25 @@ const userSchema = new mongoose.Schema({
     },
     otp: {
         type: String,
-        require: true,
+        // require: true,
     },
     profile_pic: {
         type: String,
         default: 'default_pic.png'
-    }
+    },
+    provider: {
+        type: String,
+    },
+    google_id: {
+        type: String,
+    },
 });
 
 //create the user model
 
 const userModel = mongoose.model('User', userSchema);
 
- // Function to register a new user
+// Function to register a new user
 const registerUser = async (body) => {
     let user = userModel(body);
     let saveResult = user.save();
@@ -59,7 +65,14 @@ const loginUser = async (body) => {
     return findResult;
 }
 
-  // Function to get user profile
+// Function to login a user
+const getUserByEmail = async (body) => {
+    let query = { email: (body.email).toString() };
+    let findResult = userModel.findOne(query);
+    return findResult;
+}
+
+// Function to get user profile
 const getProfile = async (userId) => {
     let query = { _id: userId };
     let findResult = userModel.findOne(query);
@@ -97,7 +110,7 @@ const userList = async () => {
     return findResult;
 }
 
-module.exports = { userModel, registerUser, loginUser, getProfile, updateProfile, userList, verifyOtpMethod };
+module.exports = { userModel, registerUser, loginUser, getProfile, updateProfile, userList, verifyOtpMethod, getUserByEmail };
 
 
 

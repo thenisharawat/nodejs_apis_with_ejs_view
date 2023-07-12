@@ -994,7 +994,8 @@ a:focus {
 
 .contact_section button {
   display: inline-block;
-  padding: 10px 45px;
+  padding: 10px 13%;
+  /* padding: 10px 67px; */
   background-color: #e7d619;
   color: #ffffff;
   -webkit-transition: all 0.3s;
@@ -1002,9 +1003,41 @@ a:focus {
   border: 1px solid #e7d619;
   border-radius: 0;
   color: #fff;
-  margin-top: 35px;
+  margin-top: 17px;
   margin-left: 30%;
   margin-bottom: 40px;
+}
+
+.social-button button {
+  display: inline-block;
+  padding: 10px 45px;
+  background-color: #ffffff;
+  color: #000000;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border: 1px solid #e91313;
+  border-radius: 0;
+  margin-top: 35px;
+  margin-left: 20%;
+  margin-bottom: 40px;
+}
+
+.social-button button:hover {
+  background-color: transparent;
+    color: #f7f7f7;
+}
+
+.or-div h4 {
+  width: 100%;
+  text-align: center;
+  border-bottom: 3px solid #000;
+  line-height: 0.1em;
+  margin: 0px 0 0px;
+}
+
+.or-div h4 span {
+  background: #fff;
+  padding: 0 10px;
 }
 
 .contact_section button:hover {

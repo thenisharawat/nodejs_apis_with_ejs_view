@@ -5,21 +5,23 @@ const userModel = require('../models/user.model');
 const fs = require('fs');
 const path = require('path');
 const { genSaltSync, hashSync, compareSync } = require('bcryptjs');
-const nodemailer = require('nodemailer');
+//const nodemailer = require('nodemailer');
 const { ADMIN_EMAIL, ADMIN_EMAIL_PASSWORD } = process.env;
 
-// // Configure Nodemailer with Gmail SMTP settings
-// const transporter = nodemailer.createTransport({
-//     service: 'smtp.office365.com',
-//     port: 587,
-//     secure: true, // Set to true if using a secure connection (e.g., with SSL/TLS)
-//     // Encryption method: "STARTTLS",
-//     auth: {
-//         user: ADMIN_EMAIL,
-//         pass: ADMIN_EMAIL_PASSWORD
-//     }
-// });
-
+// Configure Nodemailer with Gmail SMTP settings
+/*
+const transporter = nodemailer.createTransport({
+    service: 'smtp.gmail.com',
+    // service: 'smtp-mail.outlook.com',
+    port: 587,
+    // secure: true, // Set to true if using a secure connection (e.g., with SSL/TLS)
+    // Encryption method: "STARTTLS",
+    auth: {
+        user: ADMIN_EMAIL,
+        pass: ADMIN_EMAIL_PASSWORD
+    },
+})
+*/
 // Generates a random string
 const { generate } = require('otp-generator');
 
@@ -28,7 +30,7 @@ const parentPath = path.resolve(__dirname, "../../../")
 const uploadsPath = path.join(parentPath, '/public/uploads')
 
 
-    // Controller for user registration
+// Controller for user registration
 const registerController = async (req, res, next) => {
     try {
         let Body = req.body;
@@ -66,29 +68,29 @@ const registerController = async (req, res, next) => {
                     <b>Regards,</b>
                     <h3>Drools</h3>`);
 
-
-        // const mailOptions = {
-        //     from: ADMIN_EMAIL,
-        //     to: Body.email,
-        //     subject: 'Drool Account Verification!',
-        //     text: `<h3>Dear ${Body.full_name}, Welcome to the Drool!</h3>
-
-        //             <p>Please verify your account to continue using the Drool services.</p>
-        //             <p><b>Your OTP is: </b>${oneTimePassword}</p><br>
-
-        //             <b>Regards,</b>
-        //             <h3>Drools</h3>`
-        // };
-        // let flag = false;
-        // transporter.sendMail(mailOptions, (error, info) => {
-        //     if (error) {
-        //         console.log('Error:', error);
-        //         return res.send('An error occurred while sending the email.');
-        //     } else {
-        //         console.log('Email sent:', info.response);
-        //         flag = true;
-        //     }
-        // });
+        /*   const mailOptions = {
+                from: ADMIN_EMAIL,
+                to: Body.email,
+                subject: 'Drool Account Verification!',
+                text: `<h3>Dear ${Body.full_name}, Welcome to the Drool!</h3>
+    
+                        <p>Please verify your account to continue using the Drool services.</p>
+                        <p><b>Your OTP is: </b>${oneTimePassword}</p><br>
+    
+                        <b>Regards,</b>
+                        <h3>Drools</h3>`
+            };
+            let flag = false;
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log('Error:-', error);
+                    // res.send('An error occurred while sending the email.');
+                } else {
+                    console.log('Email sent:-', info.response);
+                    flag = true;
+                }
+               });
+            return*/
         // if (flag) {
         let saveResult = await userModel.registerUser(Body);
 
@@ -111,8 +113,7 @@ const registerController = async (req, res, next) => {
     }
 }
 
-    // Controller for OTP verification
-
+// Controller for OTP verification
 const verifyOtp = async (req, res, next) => {
     try {
         let Body = req.body;
@@ -153,8 +154,57 @@ const verifyOtp = async (req, res, next) => {
     }
 }
 
-   // Controller for user login
 
+// Controller for user registration or login with Google
+const googleLoginRegisterController = async (req, res, next) => {
+    try {
+        let reqBody = req.user;
+        let findResult = await userModel.getUserByEmail(reqBody);
+        if (findResult) {
+            req.session.loggedIn = true;
+            req.session.isLoggedIn = true;
+            req.session.userEmail = findResult.email;
+            req.session.userId = findResult._id;
+            req.session.userName = findResult.full_name;
+            res.redirect("/user/profile");
+        }
+        else {
+            let Body = {
+                full_name: (reqBody.displayName + ""),
+                mobile_number: null,
+                email: (reqBody.email + ""),
+                status: "Active",
+                role: "user",
+                account_verified: reqBody.email_verified,
+                profile_pic: (reqBody.picture + ""),
+                provider: (reqBody.provider + ""),
+                google_id: reqBody.id,
+            };
+
+            let saveResult = await userModel.registerUser(Body);
+
+            if (saveResult) {
+                req.session.loggedIn = true;
+                req.session.isLoggedIn = false;
+                req.session.userEmail = saveResult.email;
+                req.session.userId = saveResult._id;
+                req.session.userName = saveResult.full_name;
+                res.redirect("/user/profile");
+            }
+            else {
+                let notRegister = 'Registration unsuccessful!';
+                let title = 'Register';
+                res.render("register", { title, notRegister });
+            }
+        }
+    }
+    catch (error) {
+        console.log("Catch error:-", error);
+        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+    }
+}
+
+// Controller for user login
 const loginController = async (req, res, next) => {
     try {
         let Body = req.body;
@@ -171,7 +221,6 @@ const loginController = async (req, res, next) => {
                     req.session.userId = loginResult._id;
                     req.session.userName = loginResult.full_name;
                     res.redirect("/");
-                    // res.send(`<h2>Logged in successfully</h2>`);
                 }
                 else {
                     let notLogin = 'Invalid password!';
@@ -198,7 +247,6 @@ const loginController = async (req, res, next) => {
 }
 
 // Controller for user profile page
-
 const profileController = async (req, res, next) => {
     try {
         let sessions = req.session;
@@ -208,10 +256,11 @@ const profileController = async (req, res, next) => {
         let title = `Profile | ${userName}`;
         let loggedIn = sessions?.loggedIn || false;
         let profilePic = profileResult.profile_pic;
-        // const filePath = `${uploadsPath}\\${profilePic}`;
-        // const fileExists = fs.existsSync(filePath);
+        let notProfile = sessions.isLoggedIn ? "Logged in successfully" : "User not found, Sign up successfully";
+        const filePath = `${uploadsPath}\\${profilePic}`;
+        const fileExists = fs.existsSync(filePath);
 
-        res.render('profile', { title: title, userName: userName, user: profileResult, loggedIn: loggedIn, profile: profilePic });
+        res.render('profile', { title: title, notProfile, userName: userName, user: profileResult, loggedIn: loggedIn, profile: profilePic, fileExists });
     }
     catch (error) {
         res.send(`<h2>Something went wrong, Please try again later: ${error}</h2>`);
@@ -219,7 +268,6 @@ const profileController = async (req, res, next) => {
 }
 
 // Controller for updating  user profile
-
 const updateProfileController = async (req, res, next) => {
     try {
         let Body = req.body;
@@ -255,4 +303,4 @@ const updateProfileController = async (req, res, next) => {
     }
 }
 
-module.exports = { registerController, loginController, profileController, updateProfileController, verifyOtp };
+module.exports = { registerController, googleLoginRegisterController, loginController, profileController, updateProfileController, verifyOtp };

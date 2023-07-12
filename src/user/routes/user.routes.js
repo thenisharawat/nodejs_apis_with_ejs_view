@@ -2,11 +2,19 @@ const express = require('express');
 const multer = require('multer');
 const userRouter = express.Router();
 const app = express();
-const { registerController, loginController, profileController, updateProfileController, verifyOtp } = require('../controllers/user.controller');
+const { registerController, loginController, profileController, updateProfileController, verifyOtp, googleLoginRegisterController } = require('../controllers/user.controller');
 const { contactController } = require('../controllers/contact.controller');
+
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const { isAuth } = require('../../utils/session');
 const { newsletterController } = require('../controllers/newsletter.controller');
+
+const {
+    CLIENT_ID,
+    CLIENT_SECRET
+} = process.env;
 
 // Configure multer to upload images to the server
 const Storage = multer.diskStorage({
@@ -40,13 +48,43 @@ const upload = multer({
     }
 });
 
+
+passport.use(new GoogleStrategy({
+    clientID: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+    callbackURL: '/user/auth/google/callback',
+    scope: ['email', 'profile'] // Include the 'profile' scope
+}, (accessToken, refreshToken, profile, done) => {
+    done(null, profile);
+}));
+
+// Serialize and deserialize user
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((id, done) => {
+    done(null, id);
+});
+
+
 // Render the register page to the user
 userRouter.get('/register', async (req, res, next) => {
     res.render('register', { title: 'Register' });
 });
 
-// User register route
-userRouter.post('/register', upload.single('image'), registerController)
+// Handle registration request from form data submitted by client side
+userRouter.post('/register', upload.single('image'), registerController);
+
+// Route for initiating Google authentication
+userRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Callback route after successful authentication
+userRouter.get('/auth/google/callback', passport.authenticate('google', {
+    failureRedirect: '/user/auth/google',
+    // successRedirect: '/profile',
+}), googleLoginRegisterController);
+
 
 // Render the login page to the user
 userRouter.get('/login', async (req, res, next) => {

@@ -6,6 +6,8 @@ const session = require('express-session');
 require('dotenv').config();
 console.log("process.env:-", process.env.PORT);
 
+const passport = require('passport');
+
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -22,16 +24,21 @@ const PORT = process.env.PORT || 2020;
 
 const parentDirectory = path.resolve(__dirname, '..');
 
+// Configure session middleware
 app.use(session(
     {
         secret: 'secret@123',
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 60 * 60 * 1000 
+            maxAge: 60 * 60 * 1000
         }
     }
 ));
+
+// Configure Passport.js
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(parentDirectory, 'public')));
 
