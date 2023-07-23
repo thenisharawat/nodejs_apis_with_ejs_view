@@ -45,7 +45,7 @@ const registerController = async (req, res, next) => {
             upperCaseAlphabets: false,
             specialChars: false
         });
-
+        
         // Assigning the role in the Body object
         Body.role = "user";
 
@@ -109,7 +109,10 @@ const registerController = async (req, res, next) => {
         // }
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -150,7 +153,10 @@ const verifyOtp = async (req, res, next) => {
         }
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -166,7 +172,7 @@ const googleLoginRegisterController = async (req, res, next) => {
             req.session.userEmail = findResult.email;
             req.session.userId = findResult._id;
             req.session.userName = findResult.full_name;
-            res.redirect("/user/profile");
+            res.redirect("/");
         }
         else {
             let Body = {
@@ -189,7 +195,7 @@ const googleLoginRegisterController = async (req, res, next) => {
                 req.session.userEmail = saveResult.email;
                 req.session.userId = saveResult._id;
                 req.session.userName = saveResult.full_name;
-                res.redirect("/user/profile");
+                res.redirect("/");
             }
             else {
                 let notRegister = 'Registration unsuccessful!';
@@ -199,10 +205,111 @@ const googleLoginRegisterController = async (req, res, next) => {
         }
     }
     catch (error) {
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+    }
+}
+
+// Controller for user registration or login with Facebook
+
+
+const facebookLoginRegisterController = async (req, res, next) => {
+    try {
+        let reqBody = req.user;
+        console.log('reqBody:-', reqBody);
+        let findResult = await userModel.getUserByEmail(reqBody);
+        if (findResult) {
+            req.session.loggedIn = true;
+            req.session.isLoggedIn = true;
+            req.session.userEmail = findResult.email;
+            req.session.userId = findResult._id;
+            req.session.userName = findResult.full_name;
+            res.redirect("/");
+        } else {
+            let Body = {
+                full_name: (reqBody.displayName + ""),
+                mobile_number: null,
+                email: (reqBody.emails + ""), // Assuming the first email from the array is the primary email
+                status: "Active",
+                role: "user",
+                account_verified: true,
+                profile_pic: (reqBody.picture + ""), // Assuming the first photo from the array is the profile photo
+                provider: (reqBody.provider + ""),
+                facebook_id: reqBody.id,
+            };
+
+            let saveResult = await userModel.registerUser(Body);
+
+            if (saveResult) {
+                req.session.loggedIn = true;
+                req.session.isLoggedIn = true;
+                req.session.userEmail = saveResult.email;
+                req.session.userId = saveResult._id;
+                req.session.userName = saveResult.full_name;
+                res.redirect("/");
+            } else {
+                let notRegister = 'Registration unsuccessful!';
+                let title = 'Register';
+                res.render("register", { title, notRegister });
+            }
+        }
+    } catch (error) {
         console.log("Catch error:-", error);
         res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
-}
+};
+
+
+const twitterLoginRegisterController = async (req, res, next) => {
+    try {
+        let reqBody = req.user;
+        console.log("reqBody:-", reqBody);
+        let findResult = await userModel.getUserByEmail(reqBody);
+        if (findResult) {
+            req.session.loggedIn = true;
+            req.session.isLoggedIn = true;
+            req.session.userEmail = findResult.email;
+            req.session.userId = findResult._id;
+            req.session.userName = findResult.full_name;
+            res.redirect("/");
+        } else {
+            let Body = {
+                full_name: reqBody.displayName,
+                mobile_number: null,
+                status: "Active",
+                role: "user",
+                account_verified: true,
+                profile_pic: reqBody.photos[0].value,
+                provider: reqBody.provider,
+                twitter_id: reqBody.id,
+            };
+
+            let saveResult = await userModel.registerUser(Body);
+
+            if (saveResult) {
+                req.session.loggedIn = true;
+                req.session.isLoggedIn = true;
+                req.session.userEmail = saveResult.email;
+                req.session.userId = saveResult._id;
+                req.session.userName = saveResult.full_name;
+                res.redirect("/");
+            } else {
+                let notRegister = 'Registration unsuccessful!';
+                let title = 'Register';
+                res.render("register", { title, notRegister });
+            }
+        }
+    }
+    catch (error) {
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+    }
+};
+
 
 // Controller for user login
 const loginController = async (req, res, next) => {
@@ -242,7 +349,10 @@ const loginController = async (req, res, next) => {
         }
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -256,14 +366,24 @@ const profileController = async (req, res, next) => {
         let title = `Profile | ${userName}`;
         let loggedIn = sessions?.loggedIn || false;
         let profilePic = profileResult.profile_pic;
-        let notProfile = sessions.isLoggedIn ? "Logged in successfully" : "User not found, Sign up successfully";
+        // let notProfile = sessions.isLoggedIn ? "Logged in successfully" : "User not found, Sign up successfully";
         const filePath = `${uploadsPath}\\${profilePic}`;
         const fileExists = fs.existsSync(filePath);
 
-        res.render('profile', { title: title, notProfile, userName: userName, user: profileResult, loggedIn: loggedIn, profile: profilePic, fileExists });
+        res.render('profile', {
+            title: title,
+            userName: userName,
+            user: profileResult,
+            loggedIn: loggedIn,
+            profile: profilePic,
+            fileExists
+        });
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error}</h2>`);
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
@@ -299,8 +419,11 @@ const updateProfileController = async (req, res, next) => {
         }
     }
     catch (error) {
-        res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
+        console.log("Catch error:", error);
+        let title = 'Oops, something went wrong!';
+        res.render("error", { title, error });
+        // res.send(`<h2>Something went wrong, Please try again later: ${error.message}</h2>`);
     }
 }
 
-module.exports = { registerController, googleLoginRegisterController, loginController, profileController, updateProfileController, verifyOtp };
+module.exports = { registerController, googleLoginRegisterController, facebookLoginRegisterController, twitterLoginRegisterController, loginController, profileController, updateProfileController, verifyOtp };

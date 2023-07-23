@@ -15,11 +15,13 @@ const db = require('./db');
 const indexRouter = require('./user/routes/index.routes');
 const userRouter = require('./user/routes/user.routes');
 const adminRouter = require('./admin/routes/admin.routes');
+const productRouter = require('./product/routes/product.routes');
+const categoryRouter = require('./category/routes/category.routes');
 const { registerController } = require('./admin/controllers/admin.controller');
 
 
 
-const PORT = process.env.PORT || 2020;
+const PORT = process.env.PORT || 5000;
 
 
 const parentDirectory = path.resolve(__dirname, '..');
@@ -30,9 +32,12 @@ app.use(session(
         secret: 'secret@123',
         resave: false,
         saveUninitialized: false,
-        cookie: {
-            maxAge: 60 * 60 * 1000
-        }
+        store: new session.MemoryStore({
+            checkPeriod: 86400000 // Cleanup expired sessions every 24 hours
+        })
+        // cookie: {
+        //     maxAge: 60 * 60 * 1000
+        // }
     }
 ));
 
@@ -59,8 +64,20 @@ app.use('/', indexRouter);
 app.use('/user', userRouter)
 
 // This is admin route and all request comes to '/admin' will go through this
-app.use('/admin', adminRouter)
+app.use('/admin', adminRouter);
 
+app.use('/category', categoryRouter);
+
+app.use('/products', productRouter);
+
+
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', (req, res) => {
+    let title = '404, Page not found!';
+    let error = `You're requesting a URL: "${req.url}" not found, please check again.`;
+    res.status(404).render('404', { title, error });
+});
 
 app.listen(PORT, () => {
     registerController();

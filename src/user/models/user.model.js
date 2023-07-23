@@ -72,6 +72,13 @@ const getUserByEmail = async (body) => {
     return findResult;
 }
 
+// Function to login a user
+const findUserByGoogleId = async (body) => {
+    let query = { google_id: (body).toString() };
+    let findResult = userModel.findOne(query);
+    return findResult;
+}
+
 // Function to get user profile
 const getProfile = async (userId) => {
     let query = { _id: userId };
@@ -110,7 +117,17 @@ const userList = async () => {
     return findResult;
 }
 
-module.exports = { userModel, registerUser, loginUser, getProfile, updateProfile, userList, verifyOtpMethod, getUserByEmail };
+module.exports = {
+    userModel,
+    registerUser,
+    loginUser,
+    getProfile,
+    updateProfile,
+    userList,
+    verifyOtpMethod,
+    getUserByEmail,
+    findUserByGoogleId,
+};
 
 
 

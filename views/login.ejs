@@ -41,39 +41,36 @@
         <!-- header section strats -->
         <header class="header_section">
             <div class="container-fluid">
-                <nav class="navbar navbar-expand-lg custom_nav-container">
+                <nav class="navbar navbar-expand-lg navbar-light custom_nav-container">
                     <a class="navbar-brand" href="/">
                         <img src="/images/logo.png" alt="">
                     </a>
-                    <div class="" id="">
-                        <div class="User_option">
-                            <form class="form-inline my-2  mb-3 mb-lg-0">
-                                <input type="search" placeholder="Search">
-                                <button class="btn   my-sm-0 nav_search-btn" type="submit"></button>
-                            </form>
-                        </div>
-
-                        <div class="custom_menu-btn">
-                            <button onclick="openNav()">
-                                <span class="s-1">
-
-                                </span>
-                                <span class="s-2">
-
-                                </span>
-                                <span class="s-3">
-
-                                </span>
-                            </button>
-                        </div>
-                        <div id="myNav" class="overlay">
-                            <div class="overlay-content">
-                                <a href="/">Home</a>
-                                <a href="/about">About</a>
-                                <a href="/contact">Contact Us</a>
-                                <a href="/user/register">Register</a>
-                            </div>
-                        </div>
+                    <div class="search_box">
+                        <form method="post" action="">
+                            <input type="text" name="search" placeholder="Search for pet food" required></input>
+                            <button class="btn nav_search-btn" type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span>
+                    </button>
+        
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/contact">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/register">Register</a>
+                            </li>
+                        </ul>
                     </div>
                 </nav>
             </div>
@@ -103,9 +100,7 @@
                             </div>
                             <p>Don't have an account? <a href="/user/register">Register here</a>
                             <div class="d-flex " style="margin-left: 4%;">
-                                <button type="submit">
-                                    Login
-                                </button>
+                                <button type="submit">Login</button>
                             </div>
                         </form>
                         <div class="or-div">
@@ -130,7 +125,28 @@
                                                 fill="#EA4335"></path>
                                         </g>
                                     </svg>
-                                    Sign In with Google</button>
+                                </button>
+                            </a>
+                            <a href="/user/auth/fb">
+                                <button>
+                                    <svg width="25" height="25" fill="#3B5998" class="cp al">
+                                        <path
+                                            d="M20.3 4H4.7a.7.7 0 0 0-.7.7v15.6c0 .38.32.7.7.7h8.33v-6.38h-2.12v-2.65h2.12V9.84c0-2.2 1.4-3.27 3.35-3.27.94 0 1.75.07 1.98.1v2.3H17c-1.06 0-1.31.5-1.31 1.24v1.76h2.65l-.53 2.65H15.7l.04 6.38h4.56a.7.7 0 0 0 .71-.7V4.7a.7.7 0 0 0-.7-.7"
+                                            fill-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </a>
+                            <a href="/user/auth/twitter">
+                                <button>
+                                    <svg width="25" height="25" fill="#3B5998" viewBox="0 0 25 25" class="dq">
+                                        <path
+                                            d="M22.3 4.3c-.82.51-1.72.88-2.67 1.08a4.25 4.25 0 0 0-6.18-.12 4.3 4.3 0 0 0-1.26 3.03c0 .34.04.67.08 1a12.2 12.2 0 0 1-8.81-4.52 4.8 4.8 0 0 0-.62 2.14 4.44 4.44 0 0 0 1.92 3.6 4.13 4.13 0 0 1-1.91-.55v.07c0 2.06 1.47 3.8 3.44 4.21-.37.08-.74.13-1.15.15l-.76-.07a4.32 4.32 0 0 0 3.98 2.99A9.03 9.03 0 0 1 3 19.14l-1-.06A12.26 12.26 0 0 0 8.6 21c7.88 0 12.2-6.55 12.17-12.18.02-.23.02-.41 0-.62a8.06 8.06 0 0 0 2.15-2.23c-.77.37-1.6.6-2.45.7a4.1 4.1 0 0 0 1.84-2.38">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                                    <!---->
                                 </a>
                         </div>
                     </div>
@@ -146,101 +162,8 @@
 
 
     <!-- info section -->
-    <section class="info_section ">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-lg-3">
-                    <div class="info_contact">
-                        <h5>
-                            CONTACT INFO
-                        </h5>
-                        <div class="contact-footer">
-                            <div>Email: <a href="mailto:rawatnisha@gmail.com">rawatnisha@gmail.com</a></div>
-
-                        </div>
-                        <div class="contact-footer">
-
-                            <div>Phone: <a href="tel:+919630196629">+919630196629</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="info_time">
-                        <h5>
-                            Opening Hours Shop
-                        </h5>
-                        <div>
-                            <p>
-                                Monday to friday
-                            </p>
-                        </div>
-                        <div>
-                            <p>
-                                07:00 am to 04:00 pm
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="info_social">
-                        <h5>
-                            social media
-                        </h5>
-                        <div class="social_container">
-                            <div>
-                                <a href="">
-                                    <img src="/images/fb.png" alt="" />
-                                </a>
-                            </div>
-                            <div>
-                                <a href="">
-                                    <img src="/images/twitter.png" alt="" />
-                                </a>
-                            </div>
-                            <div>
-                                <a href="">
-                                    <img src="/images/linkedin.png" alt="" />
-                                </a>
-                            </div>
-                            <div>
-                                <a href="">
-                                    <img src="/images/instagram.png" alt="" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="info_form pl-lg-4">
-                        <h5>
-                            Newsletter
-                        </h5>
-                        <form action="">
-                            <input type="text" placeholder="Enter Your Email" />
-                            <button type="submit">
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- footer -->
-
-
-    <!-- end info_section -->
-
-
-    <!-- footer section -->
-    <section class="container-fluid footer_section ">
-        <p>
-            &copy; 2019 All Rights Reserved. Design by
-            <a href="https://html.design/">Free Html Templates</a>
-        </p>
-    </section>
-    <!-- end  footer section -->
+    <%- include('footerSection.ejs') %>
+        <!-- end  footer section -->
 
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>

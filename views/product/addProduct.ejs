@@ -12,30 +12,28 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-
     <title>
         <%= title %>
     </title>
 
-    <% if (typeof notLogin !=='undefined' && notLogin) { %>
+    <!-- <% if (typeof notRegister !=='undefined' && notRegister) { %>
         <script>
-            window.alert("<%= notLogin %>");
+            window.alert("<%= notRegister %>");
         </script>
-        <% } %>
+        <% } %> -->
 
             <link rel="icon" type="image/x-icon" href="/images/logo.ico">
 
             <!-- bootstrap core css -->
             <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
 
-            <!-- Navbar css -->
-            <link rel="stylesheet" type="text/css" href="/css/admin-navbar.css" />
-
             <!-- fonts style -->
             <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,700&display=swap"
                 rel="stylesheet">
+
             <!-- Custom styles for this template -->
             <link href="/css/style.css" rel="stylesheet" />
+
             <!-- responsive style -->
             <link href="/css/responsive.css" rel="stylesheet" />
 </head>
@@ -44,19 +42,12 @@
     <div class="hero_area ">
         <!-- header section strats -->
         <header class="header_section">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-lg custom_nav-container">
-                    <a class="navbar-brand" href="/">
-                        <img src="/images/logo.png" alt="">
-                    </a>
-                </nav>
-            </div>
+            <!-- Your header code here, same as in your existing template -->
         </header>
         <!-- end header section -->
     </div>
 
     <!-- contact section -->
-
     <section class="contact_section layout_padding-top">
         <div class="container-fluid">
             <div class="row">
@@ -65,49 +56,39 @@
                         <div class="heading_container">
                             <img src="/images/heading-img.png" alt="">
                             <h2>
-                                Admin login here!
+                                Add New Product
                             </h2>
+                            <!-- Additional text or description if needed -->
                         </div>
-                        <form action="/admin/login" , method="POST">
-                            <div>
-                                <input type="email" name="email" placeholder="Email" required />
-                            </div>
-                            <div>
-                                <input type="password" name="password" placeholder="Password" required />
-                            </div>
-                            <div class="d-flex ">
-                                </p>
-                                <button type="submit">
-                                    Login
-                                </button>
-                            </div>
-                        </form>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                    
+                                
                     </div>
                 </div>
-                <div class="col-md-6 px-0">
-
-                </div>
+                <!-- Additional content if needed -->
             </div>
         </div>
     </section>
+    <!-- end contact section -->
+
+    <!-- info section -->
+    <!-- Your info section code here, same as in your existing template -->
+    <!-- end info_section -->
 
     <!-- footer section -->
-    <%- include('footer.ejs') %>
-        <!-- end  footer section -->
-
+    <section class="container-fluid footer_section">
+        <!-- Your footer code here, same as in your existing template -->
+    </section>
+    <!-- end footer section -->
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script>
-        const toggleButton = document.querySelector('.navbar-toggle');
-
-        toggleButton.addEventListener('click', () => {
-            toggleButton.classList.toggle('active');
-            document.querySelector('.menuItems').classList.toggle('active');
-        });
-
+        function openNav() {
+            document.getElementById("myNav").classList.toggle("menu_width")
+            document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style")
+        }
     </script>
-
 </body>
 
 </html>

@@ -2,19 +2,27 @@ const express = require('express');
 const multer = require('multer');
 const userRouter = express.Router();
 const app = express();
-const { registerController, loginController, profileController, updateProfileController, verifyOtp, googleLoginRegisterController } = require('../controllers/user.controller');
-const { contactController } = require('../controllers/contact.controller');
-
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 
-const { isAuth } = require('../../utils/session');
+const { registerController, loginController, profileController, updateProfileController, verifyOtp, googleLoginRegisterController, facebookLoginRegisterController, twitterLoginRegisterController } = require('../controllers/user.controller');
+const { contactController } = require('../controllers/contact.controller');
+const { isAuth, authentication } = require('../../utils/session');
 const { newsletterController } = require('../controllers/newsletter.controller');
+const userModel = require('../models/user.model');
 
 const {
-    CLIENT_ID,
-    CLIENT_SECRET
+    G_CLIENT_ID,
+    G_CLIENT_SECRET,
+    FB_CLIENT_ID,
+    FB_CLIENT_SECRET,
+    TW_CONSUMER_KEY,
+    TW_CONSUMER_SECRET,
 } = process.env;
+
+/*** Multer configuration starts ***/
 
 // Configure multer to upload images to the server
 const Storage = multer.diskStorage({
@@ -48,25 +56,56 @@ const upload = multer({
     }
 });
 
+/*** Multer configuration ends ***/
+
+/*** Passport strategy configuration starts ***/
 
 passport.use(new GoogleStrategy({
-    clientID: CLIENT_ID,
-    clientSecret: CLIENT_SECRET,
+    clientID: G_CLIENT_ID,
+    clientSecret: G_CLIENT_SECRET,
     callbackURL: '/user/auth/google/callback',
+    enableProof: true,
     scope: ['email', 'profile'] // Include the 'profile' scope
 }, (accessToken, refreshToken, profile, done) => {
     done(null, profile);
 }));
 
+// Configure passport to use Facebook Strategy
+passport.use(new FacebookStrategy({
+    clientID: FB_CLIENT_ID,
+    clientSecret: FB_CLIENT_SECRET,
+    callbackURL: '/user/auth/fb/callback',
+    profileFields: ['id', 'displayName', 'email', 'picture.type(large)']
+}, (accessToken, refreshToken, profile, done) => {
+    done(null, profile);
+}));
+
+passport.use(new TwitterStrategy({
+    consumerKey: TW_CONSUMER_KEY,
+    consumerSecret: TW_CONSUMER_SECRET,
+    callbackURL: '/user/auth/twitter/callback'
+}, (token, tokenSecret, profile, done) => {
+    done(null, profile);
+}));
+
+/*** Passport strategy configuration ends ***/
+
+
+/*** Passport serialize/deserialize starts ***/
+
 // Serialize and deserialize user
 passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+passport.deserializeUser(async (id, done) => {
+    // Fetch user from the database based on the ID
+    let user = await userModel.findUserByGoogleId(id);
     done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-    done(null, id);
-});
+/*** Passport serialize/deserialize ends ***/
 
+/*** User routes starts ***/
 
 // Render the register page to the user
 userRouter.get('/register', async (req, res, next) => {
@@ -81,31 +120,63 @@ userRouter.get('/auth/google', passport.authenticate('google', { scope: ['profil
 
 // Callback route after successful authentication
 userRouter.get('/auth/google/callback', passport.authenticate('google', {
-    failureRedirect: '/user/auth/google',
+    failureRedirect: '/user/login',
     // successRedirect: '/profile',
 }), googleLoginRegisterController);
 
 
+// Route for initiating Facebook authentication
+// userRouter.get('/auth/fb', passport.authenticate('facebook', { scope: ['public_profile', 'email'] }));
+userRouter.get('/auth/fb', passport.authenticate('facebook'));
+
+// Callback route after successful authentication
+userRouter.get('/auth/fb/callback', passport.authenticate('facebook', {
+    failureRedirect: '/user/login',
+}), facebookLoginRegisterController);
+
+
+userRouter.get('/auth/twitter', passport.authenticate('twitter'));
+
+userRouter.get('/auth/twitter/callback', passport.authenticate('twitter', {
+    failureRedirect: '/user/login',
+}), twitterLoginRegisterController);
+
+
 // Render the login page to the user
-userRouter.get('/login', async (req, res, next) => {
-    res.render('login', { title: 'Login' });
+userRouter.get('/login', authentication, async (req, res, next) => {
+    console.log("/login....");
+    // if (req.isAuthenticated()) {
+    //     return res.redirect('/'); // Redirect to a suitable URL for logged-in users
+    // }
+    return res.render('login', { title: 'Login' });
 });
 
 // Render the login page to the user
 userRouter.post('/verify-otp', verifyOtp);
 
 // User login route
-userRouter.post('/login', loginController);
+userRouter.post('/login', authentication, loginController);
 
 // User logout using destroy session
-userRouter.get('/logout', (req, res) => {
+userRouter.get('/logout', (req, res, next) => {
+    console.log("session?.passport:--", req.session?.passport);
+    if (req.session?.passport) {
+        req.logout((err) => {
+            if (err) {
+                console.log("err passport:--", err);
+                return next(err);
+            }
+            // Redirect to the login page or any other desired page
+        });
+        return res.redirect('/');
+    }
     // Clear session data
     req.session.destroy((error) => {
         if (error) {
             res.send(`<h2>Something went wrong: ${error}</h2>`);
         } else {
             // Redirect to the login page or any other desired page
-            res.redirect('/user/login');
+            return res.redirect('/');
         }
     });
 });
